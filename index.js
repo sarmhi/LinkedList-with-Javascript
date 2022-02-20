@@ -1,5 +1,3 @@
-// add a method reverse() to the linked list that reverses the entire list of nodes
-
 class LinkedList {
   constructor(value) {
       this.head = {
@@ -40,6 +38,9 @@ class LinkedList {
   }
   insert(index, value){
     //Check for proper parameters;
+    if (typeof index !== 'number') {
+      throw new Error('Index must be an integer.')
+    } 
     if(index >= this.length) {
       return this.append(value);
     }
@@ -57,6 +58,9 @@ class LinkedList {
   }
   traverseToIndex(index) {
     //Check parameters
+    if (typeof index !== 'number') {
+      throw new Error('Index must be an integer.')
+    } 
     let counter = 0;
     let currentNode = this.head;
     while(counter !== index){
@@ -66,7 +70,10 @@ class LinkedList {
     return currentNode;
   }
   remove(index) {
-    // Check Parameters      
+    // Check Parameters 
+    if (typeof index !== 'number') {
+      throw new Error('Index must be an integer.')
+    } 
     const leader = this.traverseToIndex(index-1);
     const unwantedNode = leader.next;
     leader.next = unwantedNode.next;
@@ -74,19 +81,26 @@ class LinkedList {
     return this.printList();
   }
   reverse() {
-    let previous = null;
-    let currentNode = this.head;
+    //check for a single element in the list
+    if (!this.head.next){
+      return this;
+    }
+    //get references for first and second elements
+    let first = this.head;
     this.tail = this.head;
-    let next = null;
-    while (currentNode){
-      next = currentNode.next;  
-      currentNode.next = previous;
-      this.head = currentNode;
-      previous = currentNode;
-      currentNode = next;
+    let second = first.next;
+
+    //traverse list while reversing the pointers
+    while (second){
+      let temp = second.next;
+      second.next = first;
+      first= second;
+      second = temp;
 
     }
-    
+    this.head.next = null
+    this.head = first;
+
     return this.printList();
   }
 }
